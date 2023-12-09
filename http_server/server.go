@@ -19,6 +19,7 @@ import (
 func InstantiateServer(serverAddress string) {
 	server := initServer(serverAddress)
 
+	// handle graceful shutdown
 	done := make(chan os.Signal, 1)
 	signal.Notify(done, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 
@@ -32,6 +33,7 @@ func InstantiateServer(serverAddress string) {
 	<-done
 	log.Println("stopping server gracefully")
 
+	// kill the server if its shutdown bogs for more than 5 seconds for whatever reason
 	shutdownCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -45,6 +47,7 @@ func initServer(serverAddress string) *http.Server {
 	timeout := time.Minute
 
 	mainRouter := chi.NewRouter()
+	// attach some useful middlewares
 	mainRouter.Use(middleware.Logger)
 	mainRouter.Use(middleware.RequestID)
 	mainRouter.Use(middleware.Recoverer)
