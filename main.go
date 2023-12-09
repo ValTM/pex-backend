@@ -16,5 +16,5 @@ func main() {
 	ctx, cancelFunc := context.WithTimeout(cancellable, 5*time.Second)
 	defer cancelFunc()
 
-	http_server.ServerInstance(serviceAddress)
+	http_server.InstantiateServer(serviceAddress)
 }

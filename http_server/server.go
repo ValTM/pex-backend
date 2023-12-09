@@ -16,7 +16,7 @@ import (
 	"pex-backend/counter_service"
 )
 
-func ServerInstance(serverAddress string) {
+func InstantiateServer(serverAddress string) {
 	server := initServer(serverAddress)
 
 	done := make(chan os.Signal, 1)
